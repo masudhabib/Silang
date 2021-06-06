@@ -1,14 +1,25 @@
-# This is a sample Python script.
-
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hello_world(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print('Hello World!')  # Press ⌘F8 to toggle the breakpoint.
+import sys
+import lexer
+import parser
+from errors import *
 
 
-# Press the green button in the gutter to run the script.
+# For Pycharm: press the green button in the gutter to run the command-line interface.
 if __name__ == '__main__':
-    print_hello_world('Hello World!')
+    state_ = parser.ParserState()
+    while True:
+        # Start point
+        text_input = input('Silang code:\n')
+
+        try:
+            result = parser.parse(text_input, state_).evaluate(state_)
+            parser.print_parse_result(result)
+        except UnexpectedEndError as e:
+            print(e)
+            continue
+        except UnexpectedTokenError as e:
+            print(f"Unexpected token error: {e}.")
+            continue
+        except LogicError as e:
+            print(e)
+            continue
